@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace 命名空间 指向 定义一个Dao接口-->
+<mapper namespace="com.lcf.dao.BooksMapper">
+
+    <!--增加一个Book-->
+    <insert id="addBook" parameterType="books">
+        insert into books (bookName,bookCounts,detail)
+        values (#{bookName},#{bookCounts},#{detail})
+    </insert>
+
+    <!--根据id删除一个Book-->
+    <delete id="deleteBookById" parameterType="int">
+        delete from books where bookId=#{bookId}
+    </delete>
+
+    <!--更新一个book-->
+    <update id="updateBook" parameterType="books">
+        update books set bookName = #{bookName},bookCounts = #{bookCounts},detail = #{detail}
+        where bookId = #{bookId}
+    </update>
+
+    <!--根据id查询,返回一个Book-->
+    <select id="queryBookById" parameterType="int" resultType="com.lcf.pojo.Books">
+        select * from books where bookID=#{bookId}
+    </select>
+
+    <!--传参则模糊查询 不传参则查全量数据-->
+    <select id="queryAllBook" parameterType="string" resultType="books">
+        select * from books
+        <where>
+            <if test="bookName != null">
+                bookName like concat('%',#{bookName},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>
